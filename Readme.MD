@@ -2,6 +2,12 @@
 
 [Cucumber](https://github.com/cucumber/cucumber-js) with sync, callable steps and parsed arguments. 
 
+**Quick features:**
+
+ - Sync with fibers and non blocking;
+ - Call other step from step definitions;
+ - Parse values such as arrays, objects and decimals;
+
 You **should first understand** [official cucumber](https://github.com/cucumber/cucumber-js) before using this library, because it might be confusing at first.
 
 
@@ -111,11 +117,10 @@ Will install the dependencies for your example:
 
 
 
-### Add a hook
+### Add a before hook
 
 This will make the world instance to know about the test context. This is required to
-make the core.plugins.addStepMethod plugin to work. This enables you to call a step from
-within another step.
+make the core.plugins.addStepMethod plugin to work. This enables you to **call other steps from step definitions**.
 
 ```javascript
 // In your "support/hooks.js" file:
@@ -196,7 +201,7 @@ module.exports = function(){
 ```
 
 
-#### Call steps from within other steps
+#### Call other step from step definitions
 
 In order to have the new `addStep` method in the step test context you need
 to do this. This is required to call the step from another step.
@@ -275,7 +280,7 @@ Notice that the function will not get any `callback` argument at the end as it's
 function.
 
 
-### Call a step from within another step
+### Call other step from step definitions
 
 Let's add another step `b` and change step `a` to call step `b` (notice the `this.callStep('b', 1);` part):
 
