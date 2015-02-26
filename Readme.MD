@@ -22,20 +22,26 @@ Check the **[full API here](https://rawgit.com/hackhat/cucumber-pro/v0.0.1/docs/
 ### Call steps from other steps
 
 ```javascript
-// in your `all.steps.js`
-module.exports = function(){
-    var cucumberProPlugins = require('cucumber-pro').plugins;
-    cucumberProPlugins.useAll(this);
+// Feature:
+Feature: Test
+Scenario: Test
+    Given a
+    Given b 2
 
-    this.addStep('a', /^a$/, function(){
-        console.log('a');
-        this.callStep('b', 1);
-    })
+// Step defintions:
+this.addStep('a', /^a$/, function(){
+    console.log('a');
+    this.callStep('b', 1);
+})
 
-    this.addStep('b', /^b (\d+)$/, function(n){
-        console.log('b', n);
-    })
-}
+this.addStep('b', /^b (\d+)$/, function(n){
+    console.log('b', n);
+})
+
+// Output:
+// a
+// b 1
+// b 2
 ```
 
 
