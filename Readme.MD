@@ -50,12 +50,49 @@ this.addStep('b', /^b (\d+)$/, function(n){
 Using fibers your steps now can be sync and also non-blocking. Is suggested to use
 together with the [selenium-sync](https://github.com/hackhat/selenium-sync) library.
 
+```javascript
+// Step defintions:
+this.addStep('a', /^a$/, function(){
+    // Using the selenium-sync library
+    var browser = this.getBrowser();
+    var facebookW = this.getBrowser().getWindowByTitle('Facebook');
+    facebookW.focus();
+    facebookW.waitToLoad();
+    facebookW.waitForElement('#email');
+    var test = this.getUserDataByName('test');
+    facebookW.findEl('#email').sendKeys(test.email);
+    facebookW.findEl('#pass').sendKeys(test.password);
+    facebookW.findEl('#loginbutton').click();
+    browser.waitWindowToBeClosed(facebookW);
+    // No need to call any callback because when reaches this line
+    // the above code has already been done. Is sync, remember?
+})
+```
 
 ### Parse values automatically
 
-Your numbers in the features are automatically converted to numbers. As a bonus
-you can even convert from the EJSON format.
+Everything is considered to be a pure JavaScript value.
 
+```javascript
+// Feature:
+Feature: Test
+Scenario: Test
+    Given A simple number 2
+    Given A complex object {a: 'abc', b: 3}
+    Given An array [1, 2, 3]
+
+// Step defintions:
+this.addStep('simpleNumber', /^A simple number (\d+)$/, function(n){
+    console.log('simpleNumber', n * 2); // logs: simpleNumber 4
+})
+this.addStep('complexObject', /^A complex object (.*)$/, function(obj){
+    console.log('complexObject', obj.a);     // logs: complexObject abc
+    console.log('complexObject', obj.b * 2); // logs: complexObject 6
+})
+this.addStep('anArray', /^An array (.*)$/, function(array){
+    console.log('anArray', array); // logs: anArray [ 1, 2, 3 ]
+})
+```
 ## Setup
 
 To use this library you have to make several steps.
