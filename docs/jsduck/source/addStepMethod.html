@@ -26,9 +26,10 @@
  *
  *     this.addStep(uniqueStepName, regexp, function);
  *
- * Example of steps definition:
+ * ## Example of steps definition
  *
- *     // all.steps.js
+ * Create a file in `tests/steps/all.steps.js` with contents:
+ *
  *     this.addStep('a', /^a$/, function(){
  *         console.log('a')
  *         this.callStep('b', 1);
@@ -37,19 +38,19 @@
  *         console.log('b', n)
  *     })
  *
- *     // test.feature
+ * Create a file in `tests/test.feature` with contents:
+ *
  *     Feature: Test
  *
  *     Scenario: Test
  *         Given a
  *         Given b 2
  *
- * Will log:
+ * Run it with cucumber and it will log:
  *
  *     a    // From a called from the test.feature directly
  *     b 1  // From b but called by step a
  *     b 2  // From b called from the test.feature directly
- *
  *
  * @param {*} target The context of the test function which has the `.Given` methods.
  */
