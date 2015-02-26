@@ -96,6 +96,7 @@ var World = function(cb){
      * Now every future action will be called on the "crazy" browser.
      * Then go back and set the current browser to "default" to go to the first
      * browser and run actions against it.
+     * @private
      */
     this.__context = {
         currentBrowser : 'default',

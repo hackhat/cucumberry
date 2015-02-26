@@ -1,6 +1,9 @@
 /**
+ * @class core.plugins.makeFiber
+ * You can now call a step from another step.
  * Adds a `addStep` method to the test context. These
  * tests can later be called by the world with `callStep`.
+ * @param {*} target The context of the test function which has the `.Given` methods.
  */
 var addStepMethod = function(target){
     if(target.__steps) throw new Error('Target already has steps.')

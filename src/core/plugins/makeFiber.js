@@ -5,7 +5,9 @@ var Future = require('fibers/future');
 
 
 /**
- * Call it with the context of the test you want to augument.
+ * @class core.plugins.makeFiber
+ * Will make your tests sync with fibers. No need to call the callback when you end.
+ * @param {*} target The context of the test function which has the `.Given` methods.
  */
 var makeFiber = function(target){
     target.__makeFiber_origGiven = target.Given;
