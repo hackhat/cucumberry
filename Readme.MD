@@ -10,19 +10,64 @@ Cucumber-js with sync and callable steps.
 
 
 
+## API
+
+Check the **[full API here](https://rawgit.com/hackhat/cucumber-pro/v0.0.1/docs/jsduck/index.html)**.
+
+
+
+## Features
+
+
+### Call steps from other steps
+
+```javascript
+// in your `all.steps.js`
+module.exports = function(){
+    var cucumberProPlugins = require('cucumber-pro').plugins;
+    cucumberProPlugins.useAll(this);
+
+    this.addStep('a', /^a$/, function(){
+        console.log('a');
+        this.callStep('b', 1);
+    })
+
+    this.addStep('b', /^b (\d+)$/, function(n){
+        console.log('b', n);
+    })
+}
+```
+
+
+### No more async steps, all your steps are sync and non blocking
+
+Using fibers your steps now can be sync and also non-blocking. Is suggested to use
+together with the [selenium-sync](https://github.com/hackhat/selenium-sync) library.
+
+
+### Parse values automatically
+
+Your numbers in the features are automatically converted to numbers. As a bonus
+you can even convert from the EJSON format.
+
 ## Setup
 
-To make internal callable steps:
+To use this library you have to make several steps.
 
 
 ### Add a hook
 
-This will make the world instance to know about the test context.
+This will make the world instance to know about the test context. This is required to
+make the core.plugins.addStepMethod plugin to work. This enables you to call a step from
+within another step.
 
 ```javascript
 var hooks = function(){
+    // You have to save the context here.
     var testContext = this;
     this.Before(function(cb){
+        // And then send it to the world instance
+        // with the `setTestContext` method.
         this.setTestContext(testContext);
         cb();
     });
@@ -32,28 +77,81 @@ var hooks = function(){
 
 ### Patch the test context
 
+All patches have place in the `*.steps.js` (step definition) files. An example can be shown here:
+
+```javascript
+// in your `all.steps.js`
+module.exports = function(){
+    var cucumberProPlugins = require('cucumber-pro').plugins;
+}
+```
+
+
+#### Use all plugins effortlessly
+
+If you want to use all plugins here is the code:
+
+```javascript
+// in your `all.steps.js`
+module.exports = function(){
+    var cucumberProPlugins = require('cucumber-pro').plugins;
+    cucumberProPlugins.useAll(this);
+}
+```
+
+Or you can use individually in this **exact order only**:
+
+```javascript
+// in your `all.steps.js`
+module.exports = function(){
+    var cucumberProPlugins = require('cucumber-pro').plugins;
+    cucumberProPlugins.useEJSONArguments(this);
+    cucumberProPlugins.makeFiber(this);
+    cucumberProPlugins.addStepMethod(this);
+}
+```
+
+
+#### Parse values
+
 Make automatically to parse correct values. For example an `1.1` argument will be
 automatically converted into a decimal number, but `"1.1"` will be a string.
 
 ```javascript
-this.World.testUtils.useEJSONArguments(this);
+// in your `all.steps.js`
+module.exports = function(){
+    var cucumberProPlugins = require('cucumber-pro').plugins;
+    cucumberProPlugins.useEJSONArguments(this);
+}
 ```
+
+
+#### Make methods sync with fibers
 
 Make all the `Given` methods sync with fibers. After you do this the steps will
 run sync and no need to call the `callback` function when the step ends.
 
 ```javascript
-this.World.testUtils.makeFiber(this);
+// in your `all.steps.js`
+module.exports = function(){
+    var cucumberProPlugins = require('cucumber-pro').plugins;
+    cucumberProPlugins.makeFiber(this);
+}
 ```
+
+
+#### Call steps from within other steps
 
 In order to have the new `addStep` method in the text context you need
 to do this. This is required to call the step from another step.
 
 ```javascript
-this.World.testUtils.addStepMethod(this);
+// in your `all.steps.js`
+module.exports = function(){
+    var cucumberProPlugins = require('cucumber-pro').plugins;
+    cucumberProPlugins.addStepMethod(this);
+}
 ```
-
-Should be in this order so the saved step is already using fiber.
 
 
 ### Inherit your world from our world
@@ -62,14 +160,20 @@ This will add a method to your world instance named `callStep` which enables you
 to call a step. 
 
 
-### Define a step
+### Define some steps
 
 Your step definition should look like this:
 
 ```javascript
-this.addStep('a', /^a$/, function(){
-    console.log('a')
-})
+// in your `all.steps.js`
+module.exports = function(){
+    var cucumberProPlugins = require('cucumber-pro').plugins;
+    cucumberProPlugins.useAll(this);
+
+    this.addStep('a', /^a$/, function(){
+        console.log('a');
+    })
+}
 ```
 
 The API is like this:
@@ -78,41 +182,54 @@ The API is like this:
 this.addStep(uniqueStepName, regexMatch, function);
 ```
 
-Notice that the function will not get any `callback` argument at the end as
-with async tests.
-Let's add another step
+Notice that the function will not get any `callback` argument at the end as it's an sync
+function.
+
+
+### Call another step from within
+
+Let's add another step `b` and change step `a` to call step `b`:
 
 ```javascript
-this.addStep('b', /^b (\d+)$/, function(n){
-    console.log('b', n)
-})
-```
+// in your `all.steps.js`
+module.exports = function(){
+    var cucumberProPlugins = require('cucumber-pro').plugins;
+    cucumberProPlugins.useAll(this);
 
+    this.addStep('a', /^a$/, function(){
+        console.log('a');
+        this.callStep('b', 1);
+    })
 
-### Run it
-
-Add the feature `Given a`.
-Call another step:
-
-```javascript
-this.addStep('a', /^a$/, function(){
-    console.log('a')
-    this.callStep('b', 1);
-})
+    this.addStep('b', /^b (\d+)$/, function(n){
+        console.log('b', n);
+    })
+}
 ```
 
 The `callStep` API looks like this:
 
 ```javascript
-this.callStep(uniqueStepName, arguments)
+this.callStep(uniqueStepName, arguments);
 ```
 
-Now the output will be:
-    a
-    b 1
+
+### Create a feature
+
+Create a file named `test.feature`
+
+```feature
+Feature: Test
+Scenario: Test
+    Given a
+    Given b 2
+```
 
 
+### Run it
 
-## API
+Run it with your cucumber-js command and the output will be:
 
-Check the **[full API here](https://rawgit.com/hackhat/cucumber-pro/v0.0.1/docs/jsduck/index.html)**.
+    a    // From a called from the test.feature directly
+    b 1  // From b but called by step a
+    b 2  // From b called from the test.feature directly

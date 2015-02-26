@@ -14,11 +14,11 @@
  * Create a file in `tests/steps/all.steps.js` with contents:
  *
  *     this.addStep('a', /^a$/, function(){
- *         console.log('a')
+ *         console.log('a');
  *         this.callStep('b', 1);
  *     })
  *     this.addStep('b', /^b (\d+)$/, function(n){
- *         console.log('b', n)
+ *         console.log('b', n);
  *     })
  *
  * Create a file in `tests/test.feature` with contents:
