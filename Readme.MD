@@ -20,7 +20,7 @@ You **should first understand** [official cucumber](https://github.com/cucumber/
 
 ## API
 
-Check the **[full API here](https://rawgit.com/hackhat/cucumber-pro/v0.0.1/docs/jsduck/index.html)**.
+Check the **[full API here](https://cdn.rawgit.com/hackhat/cucumber-pro/v0.0.1/docs/jsduck/index.html)**.
 
 
 

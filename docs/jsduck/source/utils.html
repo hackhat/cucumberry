@@ -33,13 +33,9 @@ var utils  = {};
 
 
 utils.parseValue = function(value){
-    if(value === 'undefined' || value === 'void 0'){
-        value = void 0;
-    }else{
-        eval('var __parsedValue = ' + value);
-        value = __parsedValue;
-        __parsedValue = undefined;
-    }
+    eval('var __parsedValue = ' + value);
+    value = __parsedValue;
+    __parsedValue = undefined;
     return value;
 }
 
