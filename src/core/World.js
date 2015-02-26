@@ -84,9 +84,7 @@ var Future    = require('fibers/future');
  *
  */
 var World = function(cb){
-    cb && cb();
     this.__browsers = {};
-    this.databaseName = 'test';
     /**
      * Context is useful if you need to keep track of stuff. For example
      * you have the default user to open a new browser. Now every action
@@ -102,6 +100,12 @@ var World = function(cb){
         currentBrowser : 'default',
         currentUser    : 'totty',
     }
+    this.__users = {
+        byName  : {},
+        byEmail : {},
+        all     : [],
+    }
+    cb && cb();
 }
 
 
@@ -118,9 +122,17 @@ _.extend(World.prototype, {
 
 
 
+    addUserData: function(userData){
+        this.__users.byName[userData.name]   = userData;
+        this.__users.byEmail[userData.email]   = userData;
+        this.__users.all.push(userData);
+    },
+
+
+
     setCurrentUserName: function(name){
         this.__context.currentUser = name;
-        if(!users.byName){
+        if(!this.__users.byName){
             throw new Error('No user found with name "' + name + '".')
         }
     },
@@ -128,13 +140,13 @@ _.extend(World.prototype, {
 
 
     getCurrentUser: function(){
-        return users.byName[this.__context.currentUser];
+        return this.__users.byName[this.__context.currentUser];
     },
 
 
 
     getUserDataByName: function(name){
-        return users.byName[name];
+        return this.__users.byName[name];
     },
 
 
@@ -192,7 +204,4 @@ _.extend(World.prototype, {
 
 
 
-module.exports = {
-    fn    : function(cb){cb(new World())},
-    World : World,
-}
+module.exports = World;
