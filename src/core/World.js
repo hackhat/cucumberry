@@ -167,7 +167,7 @@ _.extend(World.prototype, {
         args = Array.prototype.slice.call(arguments);
         // Remove the uniqueName
         args.shift();
-        this.__testContext.__steps[uniqueName].apply(this, args);
+        this.__testContext.getStep(uniqueName).apply(this, args);
     },
 
 

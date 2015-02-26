@@ -70,15 +70,18 @@ utils.makeFiber = function(target){
  * Adds a `addStep` method to the test context. These
  * tests can later be called by the world with `callStep`.
  */
-utils.addStepMethod = function(testContext){
-    if(testContext.__steps) throw new Error('Target already has steps.')
-    testContext.__steps = {};
-    testContext.__addStep_origGiven = testContext.Given;
-    var origGiven = testContext.Given;
-    testContext.addStep = function(uniqueName, regexp, fn){
-        testContext.__steps[uniqueName] = fn;
+utils.addStepMethod = function(target){
+    if(target.__steps) throw new Error('Target already has steps.')
+    target.__steps = {};
+    target.__addStep_origGiven = target.Given;
+    var origGiven = target.Given;
+    target.addStep = function(uniqueName, regexp, fn){
+        target.__steps[uniqueName] = fn;
         this.__addStep_origGiven(regexp, fn);
-    }.bind(testContext)
+    }.bind(target)
+    target.getStep = function(uniqueName){
+        return target.__steps[uniqueName];
+    }
 }
 
 
