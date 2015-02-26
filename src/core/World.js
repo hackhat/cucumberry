@@ -98,7 +98,7 @@ var World = function(cb){
      */
     this.__context = {
         currentBrowser : 'default',
-        currentUser    : 'totty',
+        currentUser    : 'default',
     }
     this.__users = {
         byName  : {},
@@ -119,6 +119,12 @@ World.testUtils = testUtils;
 
 
 _.extend(World.prototype, {
+
+
+
+    setDefaultContext: function(defaults){
+        _.extend(this.__context, defaults);
+    },
 
 
 
