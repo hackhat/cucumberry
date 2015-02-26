@@ -1,6 +1,8 @@
 # cucumber-pro
 
-[Cucumber-js](https://github.com/cucumber/cucumber-js) with sync, callable steps and parsed arguments. To use with cucumber-js only.
+[Cucumber](https://github.com/cucumber/cucumber-js) with sync, callable steps and parsed arguments. 
+
+You **should first understand** [official cucumber](https://github.com/cucumber/cucumber-js) before using this library, because it might be confusing at first.
 
 
 
@@ -93,9 +95,20 @@ this.addStep('anArray', /^An array (.*)$/, function(array){
     console.log('anArray', array); // logs: anArray [ 1, 2, 3 ]
 })
 ```
+
+
+
 ## Setup
 
 To use this library you have to make several steps.
+
+
+### Install dependencies
+
+Will install the dependencies for your example:
+
+    npm install cucumber cucumber-pro lodash --save-dev
+
 
 
 ### Add a hook
@@ -197,7 +210,7 @@ module.exports = function(){
 ```
 
 
-### Inherit your world from our world
+### Inherit your world from cucumber-pro's world
 
 This will add a method to your world instance named `callStep` which enables you
 to call a step. 
@@ -264,7 +277,7 @@ function.
 
 ### Call a step from within another step
 
-Let's add another step `b` and change step `a` to call step `b`:
+Let's add another step `b` and change step `a` to call step `b` (notice the `this.callStep('b', 1);` part):
 
 ```javascript
 // in your `all.steps.js`
@@ -304,8 +317,14 @@ Scenario: Test
 
 ### Run it
 
-Run it with your cucumber-js command and the output will be:
+Run it with your `cucumber-js` command and the output will be:
 
     a    // From a called from the test.feature directly
     b 1  // From b but called by step a
     b 2  // From b called from the test.feature directly
+
+
+
+## More info
+
+ - Read the [official cucumber docs](https://github.com/cucumber/cucumber-js).
