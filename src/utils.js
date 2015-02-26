@@ -1,5 +1,4 @@
 var Future = require('fibers/future');
-var EJSON  = require('EJSON');
 
 
 
@@ -17,11 +16,9 @@ var utils  = {};
 
 
 utils.parseValue = function(value){
-    if(value === 'undefined' || value === 'void 0'){
-        value = void 0;
-    }else{
-        value = EJSON.parse(value);
-    }
+    eval('var __parsedValue = ' + value);
+    value = __parsedValue;
+    __parsedValue = undefined;
     return value;
 }
 

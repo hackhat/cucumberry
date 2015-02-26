@@ -16,7 +16,6 @@
 </head>
 <body onload="prettyPrint(); highlight();">
   <pre class="prettyprint lang-js">var Future = require('fibers/future');
-var EJSON  = require('EJSON');
 
 
 
@@ -37,7 +36,9 @@ utils.parseValue = function(value){
     if(value === 'undefined' || value === 'void 0'){
         value = void 0;
     }else{
-        value = EJSON.parse(value);
+        eval('var __parsedValue = ' + value);
+        value = __parsedValue;
+        __parsedValue = undefined;
     }
     return value;
 }

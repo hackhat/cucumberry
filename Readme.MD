@@ -148,7 +148,7 @@ Or you can use individually in this **exact order only**:
 // in your `all.steps.js`
 module.exports = function(){
     var cucumberProPlugins = require('cucumber-pro').plugins;
-    cucumberProPlugins.useEJSONArguments(this);
+    cucumberProPlugins.parseArguments(this);
     cucumberProPlugins.makeFiber(this);
     cucumberProPlugins.addStepMethod(this);
 }
@@ -164,7 +164,7 @@ automatically converted into a decimal number, but `"1.1"` will be a string.
 // in your `all.steps.js`
 module.exports = function(){
     var cucumberProPlugins = require('cucumber-pro').plugins;
-    cucumberProPlugins.useEJSONArguments(this);
+    cucumberProPlugins.parseArguments(this);
 }
 ```
 

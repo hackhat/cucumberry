@@ -5,13 +5,13 @@ var utils = require('../../utils');
 
 
 /**
- * @class core.plugins.useEJSONArguments
+ * @class core.plugins.parseArguments
  * Will easily convert the decimals and other values from
- * the EJSON format. Also takes care of undefined.
+ * the arguments. Also takes care of undefined.
  * @param {*} target The context of the test function which has the `.Given` methods.
  */
-var useEJSONArguments = function(target){
-    target.__useEJSONArguments__origGiven = target.Given;
+var parseArguments = function(target){
+    target.__parseArguments__origGiven = target.Given;
     target.Given = function(regexp, fn){
         var wrapperFn = function(){
             var args = Array.prototype.slice.call(arguments);
@@ -23,7 +23,7 @@ var useEJSONArguments = function(target){
             })
             fn.apply(this, args);
         }
-        this.__useEJSONArguments__origGiven(regexp, wrapperFn);
+        this.__parseArguments__origGiven(regexp, wrapperFn);
     }.bind(target)
 }
 
@@ -31,4 +31,4 @@ var useEJSONArguments = function(target){
 
 
 
-module.exports = useEJSONArguments;
+module.exports = parseArguments;

@@ -10,7 +10,7 @@
  */
 var useAll = function(target){
     var plugins = require('./index')
-    plugins.useEJSONArguments(target);
+    plugins.parseArguments(target);
     plugins.makeFiber(target);
     plugins.addStepMethod(target);
 }

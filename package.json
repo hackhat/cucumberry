@@ -1,7 +1,7 @@
 {
   "name": "cucumber-pro",
   "version": "0.0.1",
-  "description": "Cucumber-js with sync and callable steps.",
+  "description": "Cucumber-js with sync, callable steps and parsed arguments.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,7 +19,6 @@
   "author": "hackhat",
   "license": "ISC",
   "dependencies": {
-    "ejson": "^2.0.1",
     "fibers": "^1.0.5",
     "lodash": "^3.3.1"
   },
