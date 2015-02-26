@@ -1,4 +1,3 @@
-# cucumber-pro
 ![cucumber-pro logo](./docs/logo.jpg)
 
 [Cucumber](https://github.com/cucumber/cucumber-js) with sync, callable steps and parsed arguments. 
