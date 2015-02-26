@@ -1,3 +1,4 @@
 module.exports = {
-    World: require('./core/World')
+    World   : require('./core/World'),
+    plugins : require('./core/Plugins'),
 }

@@ -7,6 +7,7 @@ var Future    = require('fibers/future');
 
 
 /**
+ * @class core.World
  * To make internal callable steps:
  *
  * 1. Add a hook.
@@ -111,9 +112,11 @@ var World = function(cb){
 
 
 
-
+/**
+ * @static
+ * @type {utils}
+ */
 World.testUtils = testUtils;
-
 
 
 
@@ -122,20 +125,25 @@ _.extend(World.prototype, {
 
 
 
-    setDefaultContext: function(defaults){
-        _.extend(this.__context, defaults);
-    },
-
-
-
+    /**
+     * Adds a new user. A user has a name and email by default.
+     * More can be added as you want.
+     * @param {Object} userData
+     * @param {String} userData.name
+     * @param {String} userData.email
+     */
     addUserData: function(userData){
         this.__users.byName[userData.name]   = userData;
-        this.__users.byEmail[userData.email]   = userData;
+        this.__users.byEmail[userData.email] = userData;
         this.__users.all.push(userData);
     },
 
 
 
+    /**
+     * This will shift the context of the actions to this user.
+     * @param {String} name
+     */
     setCurrentUserName: function(name){
         this.__context.currentUser = name;
         if(!this.__users.byName){
