@@ -1,3 +1,3 @@
 module.exports = {
-    World: World
+    World: require('./core/World')
 }
