@@ -1,6 +1,6 @@
 # cucumber-pro
 
-Cucumber-js with sync and callable steps.
+[Cucumber-js](https://github.com/cucumber/cucumber-js) with sync, callable steps and parsed arguments. To use with cucumber-js only.
 
 
 
