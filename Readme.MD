@@ -262,7 +262,7 @@ Notice that the function will not get any `callback` argument at the end as it's
 function.
 
 
-### Call another step from within
+### Call a step from within another step
 
 Let's add another step `b` and change step `a` to call step `b`:
 
