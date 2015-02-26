@@ -4,7 +4,7 @@
 
 **Quick features:**
 
- - Sync with fibers and non blocking;
+ - Sync step definitions, no more callbacks;
  - Call other step from step definitions;
  - Parse values such as arrays, objects and decimals;
 
