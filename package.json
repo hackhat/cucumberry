@@ -1,6 +1,6 @@
 {
   "name": "cucumber-pro",
-  "version": "0.0.3",
+  "version": "0.0.1",
   "description": "Cucumber-js with sync and callable steps.",
   "main": "src/index.js",
   "scripts": {
