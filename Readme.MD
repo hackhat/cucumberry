@@ -47,7 +47,7 @@ this.addStep('b', /^b (\d+)$/, function(n){
 
 ### No more async steps, all your steps are sync and non blocking
 
-Using fibers your steps now can be sync and also non-blocking. Is suggested to use
+Using [fibers](https://github.com/laverdet/node-fibers) your steps now can be sync and also non-blocking. Is suggested to use
 together with the [selenium-sync](https://github.com/hackhat/selenium-sync) library.
 
 ```javascript
@@ -105,6 +105,7 @@ make the core.plugins.addStepMethod plugin to work. This enables you to call a s
 within another step.
 
 ```javascript
+// In your "support/hooks.js" file:
 var hooks = function(){
     // You have to save the context here.
     var testContext = this;
@@ -157,8 +158,7 @@ module.exports = function(){
 
 #### Parse values
 
-Make automatically to parse correct values. For example an `1.1` argument will be
-automatically converted into a decimal number, but `"1.1"` will be a string.
+Your tests feature will send JavaScript objects to the steps definition. For example an `1.1` argument will be automatically converted into a decimal number, but `"1.1"` will be a string.
 
 ```javascript
 // in your `all.steps.js`
@@ -171,7 +171,7 @@ module.exports = function(){
 
 #### Make methods sync with fibers
 
-Make all the `Given` methods sync with fibers. After you do this the steps will
+Make all the `Given` methods sync with [fibers](https://github.com/laverdet/node-fibers). After you do this the steps will
 run sync and no need to call the `callback` function when the step ends.
 
 ```javascript
@@ -185,7 +185,7 @@ module.exports = function(){
 
 #### Call steps from within other steps
 
-In order to have the new `addStep` method in the text context you need
+In order to have the new `addStep` method in the step test context you need
 to do this. This is required to call the step from another step.
 
 ```javascript
@@ -201,6 +201,39 @@ module.exports = function(){
 
 This will add a method to your world instance named `callStep` which enables you
 to call a step. 
+
+```javascript
+// In your `support/World.js` file:
+// Load cucumber and lodash.
+var cucumberPro      = require('cucumber-pro');
+var CucumberProWorld = cucumberPro.World;
+var _                = require('lodash');
+
+// Create your own constructor.
+var World = function(cb){
+    // Call the CucumberProWorld constructor. Is required!
+    CucumberProWorld.apply(this, arguments);
+}
+
+// Inherit the static methods.
+_.extend(World, CucumberProWorld);
+// Add here your own static World methods.
+World.myStaticMethod = function(){
+    // Do something!
+}
+
+// Inherit the instance methods.
+_.extend(World.prototype, CucumberProWorld.prototype, {
+    // Add here your own static World methods.
+    myInstanceMethod: function(){
+        // Do something!
+    }
+})
+
+module.exports = {
+    World : World,
+}
+```
 
 
 ### Define some steps
