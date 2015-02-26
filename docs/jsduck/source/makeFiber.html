@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">var Future = require('fibers/future');
+
+
+
+
+
+<span id='core-plugins-makeFiber'>/**
+</span> * @class core.plugins.makeFiber
+ * Will make your tests sync with fibers. No need to call the callback when you end.
+ * @param {*} target The context of the test function which has the `.Given` methods.
+ */
+var makeFiber = function(target){
+    target.__makeFiber_origGiven = target.Given;
+    target.Given = function(regexp, fn){
+        var fiberFn = function(){
+            var args = Array.prototype.slice.call(arguments);
+            // Extract and remove the cb from the arguments.
+            var cb   = args.pop();
+            Future.task(function(){
+                fn.apply(this, args);
+                // Because is running with fibers is sync. Therefore
+                // we can call cb() after the fn ends in sync.
+                cb();
+            }.bind(this)).detach();
+        }
+        this.__makeFiber_origGiven(regexp, fiberFn);
+    }.bind(target)
+}
+
+
+
+
+module.exports = makeFiber;
+</pre>
+</body>
+</html>

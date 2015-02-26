@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">var Future = require('fibers/future');
+var EJSON  = require('EJSON');
+
+
+
+
+
+<span id='utils'>/**
+</span> * @class utils
+ * @type {Object}
+ * @private
+ */
+var utils  = {};
+
+
+
+
+
+utils.parseValue = function(value){
+    if(value === 'undefined' || value === 'void 0'){
+        value = void 0;
+    }else{
+        value = EJSON.parse(value);
+    }
+    return value;
+}
+
+
+
+
+
+utils.sleep = function(ms){
+    var future = new Future;
+    setTimeout(function() {
+        future.return();
+    }, ms);
+    return future;
+}
+
+
+
+
+
+module.exports = utils;
+</pre>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">var testUtils = require('../utils');
+var _         = require('lodash');
+var Future    = require('fibers/future');
+
+
+
+
+
+<span id='core-World'>/**
+</span> * @class core.World
+ * To make internal callable steps:
+ *
+ * 1. Add a hook.
+ * This will make the world instance to know about the test context.
+ *
+ *     var hooks = function(){
+ *         var testContext = this;
+ *         this.Before(function(cb){
+ *             this.setTestContext(testContext);
+ *             cb();
+ *         });
+ *     };
+ *
+ *
+ * 2. Patch the test context.
+ * Make automatically to parse correct values. For example an `1.1` argument will be
+ * automatically converted into a decimal number, but `&quot;1.1&quot;` will be a string.
+ *
+ *     this.World.testUtils.useEJSONArguments(this);
+ *
+ * Make all the `Given` methods sync with fibers. After you do this the steps will
+ * run sync and no need to call the `callback` function when the step ends.
+ *
+ *     this.World.testUtils.makeFiber(this);
+ *
+ * In order to have the new `addStep` method in the text context you need
+ * to do this. This is required to call the step from another step.
+ *
+ *     this.World.testUtils.addStepMethod(this);
+ * Should be in this order so the saved step is already using fiber.
+ *
+ *
+ * 3. Inherit your world from our world.
+ * This will add a method to your world instance named `callStep` which enables you
+ * to call a step.
+ *
+ * 4. Define a step.
+ * Your step definition should look like this:
+ *
+ *     this.addStep('a', /^a$/, function(){
+ *         console.log('a')
+ *     })
+ *
+ * The API is like this:
+ *
+ *     this.addStep(uniqueStepName, regexMatch, function);
+ *
+ * Notice that the function will not get any `callback` argument at the end as
+ * with async tests.
+ *
+ * Let's add another step
+ *
+ *     this.addStep('b', /^b (\d+)$/, function(n){
+ *         console.log('b', n)
+ *     })
+ *
+ * 5. Run it.
+ * Add the feature `Given a`.
+ * Call another step:
+ *
+ *     this.addStep('a', /^a$/, function(){
+ *         console.log('a')
+ *         this.callStep('b', 1);
+ *     })
+ *
+ * The `callStep` API looks like this:
+ *
+ *     this.callStep(uniqueStepName, arguments)
+ *
+ * Now the output will be:
+ *
+ *     a
+ *     b 1
+ *
+ *
+ */
+var World = function(cb){
+    this.__browsers = {};
+<span id='core-World-property-__context'>    /**
+</span>     * Context is useful if you need to keep track of stuff. For example
+     * you have the default user to open a new browser. Now every action
+     * you do, you don't want to specify on which browser to take action
+     * because is automatically detected by the __context variables.
+     * Now if you want another browser you just add it and name it browser
+     * &quot;crazy&quot;. Then switch the context and set the current browser to &quot;crazy&quot;.
+     * Now every future action will be called on the &quot;crazy&quot; browser.
+     * Then go back and set the current browser to &quot;default&quot; to go to the first
+     * browser and run actions against it.
+     * @private
+     */
+    this.__context = {
+        currentBrowser : 'default',
+        currentUser    : 'default',
+    }
+    this.__users = {
+        byName  : {},
+        byEmail : {},
+        all     : [],
+    }
+    cb &amp;&amp; cb();
+}
+
+
+
+
+<span id='core-World-static-property-'>/**
+</span> * @static
+ * @type {utils}
+ */
+World.testUtils = testUtils;
+
+
+
+
+_.extend(World.prototype, {
+
+
+
+<span id='core-World-method-addUserData'>    /**
+</span>     * Adds a new user. A user has a name and email by default.
+     * More can be added as you want.
+     * @param {Object} userData
+     * @param {String} userData.name
+     * @param {String} userData.email
+     */
+    addUserData: function(userData){
+        this.__users.byName[userData.name]   = userData;
+        this.__users.byEmail[userData.email] = userData;
+        this.__users.all.push(userData);
+    },
+
+
+
+<span id='core-World-method-setCurrentUserName'>    /**
+</span>     * This will shift the context of the actions to this user.
+     * @param {String} name
+     */
+    setCurrentUserName: function(name){
+        this.__context.currentUser = name;
+        if(!this.__users.byName){
+            throw new Error('No user found with name &quot;' + name + '&quot;.')
+        }
+    },
+
+
+
+    getCurrentUser: function(){
+        return this.__users.byName[this.__context.currentUser];
+    },
+
+
+
+    getUserDataByName: function(name){
+        return this.__users.byName[name];
+    },
+
+
+
+    setTestContext: function(testContext){
+        this.__testContext = testContext;
+    },
+
+
+
+    callStep: function(uniqueName, args){
+        args = Array.prototype.slice.call(arguments);
+        // Remove the uniqueName
+        args.shift();
+        this.__testContext.getStep(uniqueName).apply(this, args);
+    },
+
+
+
+    addBrowser: function(browser, name){
+        name = name || this.__context.currentBrowser;
+        if(this.__browsers[name]) throw new Error('Another browser exists.');
+        this.__browsers[name] = browser;
+    },
+
+
+
+    getBrowser: function(name){
+        name = name || this.__context.currentBrowser;
+        if(!this.__browsers[name]) throw new Error('No browser found with name &quot;' + name + '&quot;.' + ' Only has these browsers: ' + _.keys(this.__browsers).join(', ') + '.');
+        return this.__browsers[name];
+    },
+
+
+
+    quitAllBrowsers: function(){
+        _.forEach(this.__browsers, function(browser){
+            browser.quit();
+        })
+    },
+
+
+
+    sleep: function(ms){
+        return testUtils.sleep(ms).wait();
+    }
+
+
+
+}, {
+    testUtils  : testUtils,
+})
+
+
+
+
+
+module.exports = World;
+</pre>
+</body>
+</html>

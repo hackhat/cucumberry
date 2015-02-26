@@ -8,6 +8,7 @@ var EJSON  = require('EJSON');
 /**
  * @class utils
  * @type {Object}
+ * @private
  */
 var utils  = {};
 
