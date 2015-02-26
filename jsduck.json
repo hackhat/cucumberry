@@ -1,0 +1,6 @@
+{
+    "--": ["./src"],
+    "--title": "cucumber-pro API & Docs",
+    "--output": "./docs/jsduck"
+    // "--guides": "./docs/guides/guides.json"
+}

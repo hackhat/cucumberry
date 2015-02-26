@@ -1,0 +1,27 @@
+{
+  "name": "cucumber-pro",
+  "version": "0.0.3",
+  "description": "Cucumber-js with sync and callable steps.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "npm prefix": "npm --userconfig=.npmrc"
+  },
+  "keywords": [
+    "cucumber",
+    "cucumber-js",
+    "sync",
+    "fibers",
+    "callable",
+    "clean",
+    "intuitive"
+  ],
+  "author": "hackhat",
+  "license": "ISC",
+  "dependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hackhat/cucumber-pro.git"
+  }
+}
