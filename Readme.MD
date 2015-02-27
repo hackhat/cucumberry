@@ -1,4 +1,4 @@
-![cucumber-pro logo](./docs/logo.jpg)
+![cucumberry logo](./docs/logo.jpg)
 
 [Cucumber](https://github.com/cucumber/cucumber-js) with sync, callable steps and parsed arguments. 
 
@@ -14,13 +14,13 @@ You **should first understand** [official cucumber](https://github.com/cucumber/
 
 ## Install
 
-    npm install cucumber-pro --save-dev
+    npm install cucumberry --save-dev
 
 
 
 ## API
 
-Check the **[full API here](https://cdn.rawgit.com/hackhat/cucumber-pro/v0.0.2/docs/jsduck/index.html)**.
+Check the **[full API here](https://cdn.rawgit.com/hackhat/cucumberry/v0.0.3/docs/jsduck/index.html)**.
 
 
 
@@ -113,7 +113,7 @@ To use this library you have to make several steps.
 
 Will install the dependencies for your example:
 
-    npm install cucumber cucumber-pro lodash --save-dev
+    npm install cucumber cucumberry lodash --save-dev
 
 
 
@@ -144,7 +144,7 @@ All patches have place in the `*.steps.js` (step definition) files. An example c
 ```javascript
 // in your `all.steps.js`
 module.exports = function(){
-    var cucumberProPlugins = require('cucumber-pro').plugins;
+    var cucumberryPlugins = require('cucumberry').plugins;
 }
 ```
 
@@ -156,8 +156,8 @@ If you want to use all plugins here is the code:
 ```javascript
 // in your `all.steps.js`
 module.exports = function(){
-    var cucumberProPlugins = require('cucumber-pro').plugins;
-    cucumberProPlugins.useAll(this);
+    var cucumberryPlugins = require('cucumberry').plugins;
+    cucumberryPlugins.useAll(this);
 }
 ```
 
@@ -166,10 +166,10 @@ Or you can use individually in this **exact order only**:
 ```javascript
 // in your `all.steps.js`
 module.exports = function(){
-    var cucumberProPlugins = require('cucumber-pro').plugins;
-    cucumberProPlugins.parseArguments(this);
-    cucumberProPlugins.makeFiber(this);
-    cucumberProPlugins.addStepMethod(this);
+    var cucumberryPlugins = require('cucumberry').plugins;
+    cucumberryPlugins.parseArguments(this);
+    cucumberryPlugins.makeFiber(this);
+    cucumberryPlugins.addStepMethod(this);
 }
 ```
 
@@ -181,8 +181,8 @@ Your tests feature will send JavaScript objects to the steps definition. For exa
 ```javascript
 // in your `all.steps.js`
 module.exports = function(){
-    var cucumberProPlugins = require('cucumber-pro').plugins;
-    cucumberProPlugins.parseArguments(this);
+    var cucumberryPlugins = require('cucumberry').plugins;
+    cucumberryPlugins.parseArguments(this);
 }
 ```
 
@@ -195,8 +195,8 @@ run sync and no need to call the `callback` function when the step ends.
 ```javascript
 // in your `all.steps.js`
 module.exports = function(){
-    var cucumberProPlugins = require('cucumber-pro').plugins;
-    cucumberProPlugins.makeFiber(this);
+    var cucumberryPlugins = require('cucumberry').plugins;
+    cucumberryPlugins.makeFiber(this);
 }
 ```
 
@@ -209,13 +209,13 @@ to do this. This is required to call the step from another step.
 ```javascript
 // in your `all.steps.js`
 module.exports = function(){
-    var cucumberProPlugins = require('cucumber-pro').plugins;
-    cucumberProPlugins.addStepMethod(this);
+    var cucumberryPlugins = require('cucumberry').plugins;
+    cucumberryPlugins.addStepMethod(this);
 }
 ```
 
 
-### Inherit your world from cucumber-pro's world
+### Inherit your world from cucumberry's world
 
 This will add a method to your world instance named `callStep` which enables you
 to call a step. 
@@ -223,25 +223,25 @@ to call a step.
 ```javascript
 // In your `support/World.js` file:
 // Load cucumber and lodash.
-var cucumberPro      = require('cucumber-pro');
-var CucumberProWorld = cucumberPro.World;
+var cucumberry      = require('cucumberry');
+var cucumberryWorld = cucumberry.World;
 var _                = require('lodash');
 
 // Create your own constructor.
 var World = function(cb){
-    // Call the CucumberProWorld constructor. Is required!
-    CucumberProWorld.apply(this, arguments);
+    // Call the cucumberryWorld constructor. Is required!
+    cucumberryWorld.apply(this, arguments);
 }
 
 // Inherit the static methods.
-_.extend(World, CucumberProWorld);
+_.extend(World, cucumberryWorld);
 // Add here your own static World methods.
 World.myStaticMethod = function(){
     // Do something!
 }
 
 // Inherit the instance methods.
-_.extend(World.prototype, CucumberProWorld.prototype, {
+_.extend(World.prototype, cucumberryWorld.prototype, {
     // Add here your own static World methods.
     myInstanceMethod: function(){
         // Do something!
@@ -261,8 +261,8 @@ Your step definition should look like this:
 ```javascript
 // in your `all.steps.js`
 module.exports = function(){
-    var cucumberProPlugins = require('cucumber-pro').plugins;
-    cucumberProPlugins.useAll(this);
+    var cucumberryPlugins = require('cucumberry').plugins;
+    cucumberryPlugins.useAll(this);
 
     this.addStep('a', /^a$/, function(){
         console.log('a');
@@ -287,8 +287,8 @@ Let's add another step `b` and change step `a` to call step `b` (notice the `thi
 ```javascript
 // in your `all.steps.js`
 module.exports = function(){
-    var cucumberProPlugins = require('cucumber-pro').plugins;
-    cucumberProPlugins.useAll(this);
+    var cucumberryPlugins = require('cucumberry').plugins;
+    cucumberryPlugins.useAll(this);
 
     this.addStep('a', /^a$/, function(){
         console.log('a');
