@@ -1,7 +1,7 @@
 {
   "name": "cucumberry",
   "version": "0.0.3",
-  "description": "Cucumber-js with sync, callable steps and parsed arguments.",
+  "description": "Adds sync, callable steps and parsed arguments to cucumber-js.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
