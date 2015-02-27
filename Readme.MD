@@ -1,6 +1,6 @@
 ![cucumberry logo](./docs/logo.jpg)
 
-[Cucumber](https://github.com/cucumber/cucumber-js) with sync, callable steps and parsed arguments. 
+[Cucumber-js](https://github.com/cucumber/cucumber-js) with sync, callable steps and parsed arguments. 
 
 **Quick features:**
 
