@@ -1,4 +1,4 @@
-![cucumberry logo](./docs/logo.jpg)
+![cucumberry](./docs/repo-header.jpg)
 
 [Cucumber-js](https://github.com/cucumber/cucumber-js) with sync, callable steps and parsed arguments. 
 
