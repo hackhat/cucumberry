@@ -134,6 +134,7 @@ var hooks = function(){
         cb();
     });
 };
+module.exports = hooks;
 ```
 
 
@@ -322,7 +323,7 @@ Scenario: Test
 
 ### Run it
 
-Run it with your `cucumber-js` command and the output will be:
+Run it with your `cucumber-js` (in this case would be `cucumber-js ./tests`) command and the output will be:
 
     a    // From a called from the test.feature directly
     b 1  // From b but called by step a
@@ -332,4 +333,5 @@ Run it with your `cucumber-js` command and the output will be:
 
 ## More info
 
- - Read the [official cucumber docs](https://github.com/cucumber/cucumber-js).
+ - Read the [official cucumber docs](https://github.com/cucumber/cucumber-js);
+ - [Using Gherkin Language In SpecFlow](http://www.specflow.org/documentation/Using-Gherkin-Language-in-SpecFlow/);
